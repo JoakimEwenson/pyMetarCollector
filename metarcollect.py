@@ -31,11 +31,13 @@ if (len(sys.argv) > 1):
 else:
     stationId = "ESOK"
 
+print("\n--------------------------------/--------------------------------\n")
+
 # Collect data from API and return JSON string
 def getMetarData(stationId):
     # Set up url and query string
     APIURL = "https://www.aviationweather.gov/adds/dataserver_current/httpparam?"
-    APIPARAMS = "dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=3&mostRecent=false&stationString=" + stationId
+    APIPARAMS = "dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=2&mostRecent=false&stationString=" + stationId
 
     response = requests.request("GET", APIURL + APIPARAMS)
     return response.text
@@ -64,13 +66,13 @@ for metar in data.iter('METAR'):
     for child in metar.findall('dewpoint_c'):
         metarPost.dewpoint_c = int(float(child.text))
     for child in metar.findall('wind_dir_degrees'):
-        metarPost.wind_dir_degrees = int(child.text)
+        metarPost.wind_dir_degrees = child.text
     for child in metar.findall('wind_speed_kt'):
-        metarPost.wind_speed_kt = int(child.text)
+        metarPost.wind_speed_kt = child.text
     for child in metar.findall('visibility_statute_mi'):
         metarPost.visibility_statute_mi = float(child.text)
     for child in metar.findall('altim_in_hg'):
-        metarPost.altim_in_hg = round(float(child.text),2)
+        metarPost.altim_in_hg = float(child.text)
         metarPost.qnh = round(float(child.text) / 0.029529983095997)
     for child in metar.findall('sky_condition'):
         metarPost.sky_condition.append(child.attrib)
@@ -82,13 +84,19 @@ for metar in data.iter('METAR'):
         metarPost.elevation_m = float(child.text)
 
     # Print data
-    print("{0} {1}".format(metarPost.station_id, metarPost.observation_time))
     print(metarPost.raw_text)
+    print()
+    print("{0} on {1}".format(metarPost.station_id, datetime.strftime(metarPost.observation_time,'%Y-%m-%d %H:%M')))
     print("wind {0}/{1} kt".format(metarPost.wind_dir_degrees, metarPost.wind_speed_kt))
     print("temp {0}, dewpoint {1}".format(metarPost.temp_c, metarPost.dewpoint_c))
-    print("altimeter {0}, qnh {1}".format(metarPost.altim_in_hg, metarPost.qnh))
+    print("altimeter {0:0.2f}, qnh {1}".format(metarPost.altim_in_hg, metarPost.qnh))
     if(len(metarPost.sky_condition) > 0):
         for clouds in metarPost.sky_condition:
-            print("clouds {0} at {1} ft".format(clouds['sky_cover'], clouds['cloud_base_ft_agl']))
+            if (clouds['sky_cover'] in ("CAVOK", "SKC", "CLR", "OVX")):
+                print(clouds['sky_cover'])
+            elif (clouds['sky_cover'] in ("FEW", "SCT", "BKN", "OVC")):
+                print("clouds {0} at {1} ft".format(clouds['sky_cover'], clouds['cloud_base_ft_agl']))
+            else:
+                print("no cloud data")
 
-    print()
+    print("\n--------------------------------\\--------------------------------\n")
