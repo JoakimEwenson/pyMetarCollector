@@ -37,7 +37,7 @@ print("\n--------------------------------/--------------------------------\n")
 def getMetarData(stationId):
     # Set up url and query string
     APIURL = "https://www.aviationweather.gov/adds/dataserver_current/httpparam?"
-    APIPARAMS = "dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=2&mostRecent=false&stationString=" + stationId
+    APIPARAMS = "dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=2&mostRecent=true&stationString=" + stationId
 
     response = requests.request("GET", APIURL + APIPARAMS)
     return response.text
