@@ -93,9 +93,9 @@ for metar in data.iter('METAR'):
     if(len(metarPost.sky_condition) > 0):
         for clouds in metarPost.sky_condition:
             if (clouds['sky_cover'] in ("CAVOK", "SKC", "CLR", "OVX")):
-                print("Sky conditions: {0}".format(clouds['sky_cover']))
+                print("sky conditions: {0}".format(clouds['sky_cover']))
             elif (clouds['sky_cover'] in ("FEW", "SCT", "BKN", "OVC")):
-                print("Sky conditions: clouds {0} at {1} ft".format(clouds['sky_cover'], clouds['cloud_base_ft_agl']))
+                print("sky conditions: clouds {0} at {1} ft".format(clouds['sky_cover'], clouds['cloud_base_ft_agl']))
             else:
                 print("no cloud data")
 
