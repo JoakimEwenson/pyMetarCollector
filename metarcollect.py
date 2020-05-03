@@ -25,13 +25,15 @@ class MetarPost:
     metar_type = ""
     elevation_m = ""
 
+divider = "\n--------------------------------/--------------------------------\n"
+
 # Get system arguments
 if (len(sys.argv) > 1):
     stationId = sys.argv[1]
 else:
     stationId = "ESOK"
 
-print("\n--------------------------------/--------------------------------\n")
+print(divider)
 
 # Collect data from API and return JSON string
 def getMetarData(stationId):
@@ -99,4 +101,4 @@ for metar in data.iter('METAR'):
             else:
                 print("no cloud data")
 
-    print("\n--------------------------------\\--------------------------------\n")
+    print(divider)
