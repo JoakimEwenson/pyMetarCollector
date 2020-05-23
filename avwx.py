@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import json
 import requests
 
 token = "Wa7VJ_CJ0LTjGgPfxu6M2S7KSQ9kQoo-FwQ8EEBOkSw"
@@ -11,4 +12,6 @@ headers = {
 
 response = requests.get(url, headers=headers)
 
-print(response.text)
+parsed = json.loads(response.text)
+
+print(json.dumps(parsed, indent=4))
