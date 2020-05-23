@@ -2,12 +2,12 @@
 
 import json
 import requests
-from settings import token
+from settings import avwx_token
 
 url = "https://avwx.rest/api/metar/ESSA"
 
 headers = {
-  'Authorization': token
+  'Authorization': avwx_token
 }
 
 response = requests.get(url, headers=headers)
