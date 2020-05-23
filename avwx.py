@@ -10,6 +10,7 @@ baseUrl = "https://avwx.rest/api/metar/"
 headers = {
   'Authorization': avwx_token
 }
+stationId = "ESOK"
 
 # Function for getting METAR data
 def getWx(location):
@@ -22,7 +23,7 @@ def getWx(location):
 if (len(sys.argv) > 1):
   stationId = sys.argv[1]
 else:
-  stationId = "ESOK"
+  stationId = input("Station ID: ")
 
 parsed = getWx(stationId)
 
