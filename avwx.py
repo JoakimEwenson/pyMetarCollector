@@ -2,16 +2,29 @@
 
 import json
 import requests
+import sys
 from settings import avwx_token
 
-url = "https://avwx.rest/api/metar/ESSA"
-
+# Settings
+baseUrl = "https://avwx.rest/api/metar/"
 headers = {
   'Authorization': avwx_token
 }
 
-response = requests.get(url, headers=headers)
+# Function for getting METAR data
+def getWx(location):
+  url = baseUrl + location
+  response = requests.get(url, headers=headers)
+  return json.loads(response.text)
 
-parsed = json.loads(response.text)
 
-print(json.dumps(parsed, indent=4))
+# Get system arguments
+if (len(sys.argv) > 1):
+  stationId = sys.argv[1]
+else:
+  stationId = "ESOK"
+
+parsed = getWx(stationId)
+
+#print(json.dumps(parsed, indent=4))
+print(parsed['raw'])
