@@ -2,8 +2,8 @@
 
 import json
 import requests
+from settings import token
 
-token = "Wa7VJ_CJ0LTjGgPfxu6M2S7KSQ9kQoo-FwQ8EEBOkSw"
 url = "https://avwx.rest/api/metar/ESSA"
 
 headers = {
